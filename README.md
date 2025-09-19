@@ -170,10 +170,3 @@ For support, please open an issue in the GitHub issue tracker or contact the mai
 - [ ] Machine learning-based anomaly detection
 - [ ] Multi-region support
 
-## Authors
-
-- Your Name - Initial work - [@yourusername](https://github.com/yourusername)
-
-## Project Status
-
-Active development - Production Ready
