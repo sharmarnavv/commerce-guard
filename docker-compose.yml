@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: commerceguard
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:6.2
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  website-registry-service:
+    build: 
+      context: .
+      dockerfile: commerceguard-services/website-registry-service/Dockerfile
+    ports:
+      - "8081:8081"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/commerceguard
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+
+  monitoring-service:
+    build:
+      context: .
+      dockerfile: commerceguard-monitoring/Dockerfile
+    ports:
+      - "8082:8082"
+    depends_on:
+      - website-registry-service
+      - redis
+
+  data-pipeline:
+    build:
+      context: .
+      dockerfile: commerceguard-data-pipeline/Dockerfile
+    ports:
+      - "8083:8083"
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      - SPRING_REDIS_HOST=redis
+      - SPRING_REDIS_PORT=6379
+
+volumes:
+  mysql_data:
+  redis_data:

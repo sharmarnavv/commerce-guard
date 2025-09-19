@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
+    <parent>
+        <groupId>com.commerceguard</groupId>
+        <artifactId>commerceguard-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../commerceguard-parent/pom.xml</relativePath>
+    </parent>
+
+    <artifactId>commerceguard-services</artifactId>
+    <packaging>pom</packaging>
+    <name>CommerceGuard Services</name>
+    <description>Microservices for CommerceGuard platform</description>
+
+    <modules>
+        <module>website-registry-service</module>
+        <module>test-execution-service</module>
+        <module>analytics-service</module>
+        <module>notification-service</module>
+        <module>user-management-service</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.commerceguard</groupId>
+            <artifactId>commerceguard-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- Spring Cloud -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+    </dependencies>
+</project>
